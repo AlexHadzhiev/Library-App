@@ -102,8 +102,6 @@ The ability to add books from the UI.
 .IP \n+[step]. 3
 The ability to edit and delete books from the UI.
 .IP \n+[step]. 3
-The ability to search books in the current collection or in all collections together.
-.IP \n+[step]. 3
 Cleaning up the UI.
 .IP \n+[step]. 3
 Bug fixes.
@@ -124,6 +122,8 @@ Config.h\*{[1]\*}
 Reading and redacting the metadata of a PDF.
 .IP \n+[step]. 3
 The ability to search a directory added by the user and add all books from this folder to the database and default collection.
+.IP \n+[step]. 3
+The ability to search books in the current collection or in all collections together.
 .RE
 .br
 .PP
