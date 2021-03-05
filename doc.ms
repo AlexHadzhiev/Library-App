@@ -41,9 +41,9 @@ CMake
 Management:
 .RS
 .IP \[bu] 2
-Git Flow - Github / GitLab ?
+Git Flow
 .IP \[bu] 2
-Kanban / Scrum ?
+Kanban (Azure DevOps)
 .IP \[bu] 2
 Mandatory code reviews
 .RE
