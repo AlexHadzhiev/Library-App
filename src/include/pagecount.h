@@ -1,0 +1,2 @@
+int
+pagecount ( char * filename );
