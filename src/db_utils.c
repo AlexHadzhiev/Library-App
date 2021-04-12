@@ -5,10 +5,8 @@
 #include <errno.h>
 #include <error.h>
 #include <fcntl.h>
-#include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <pthread.h>
 #include "include/db_utils.h"
 
 char *
@@ -55,10 +53,16 @@ read_from_init_file ()
 	return init_query_buffer;
 }
 
-int main (void)
+char **
+split_init_query ( char * init_query_buffer )
 {
-	char * ff = malloc (sizeof(char)*1024);
-	strcpy ( ff , read_from_init_file() );
+	char ** split_init_query_buffer = ( char ** ) calloc ( 3 , sizeof(char *) );
+	for ( int i = 0 ; i < 3 ; ++i )
+		split_init_query_buffer[i] = ( char * ) calloc ( 1024 , sizeof(char) );
 
-	printf ("%s\n",ff);
+	split_init_query_buffer[0] = strtok ( init_query_buffer , ";" );
+	split_init_query_buffer[1] = strtok ( NULL , ";" );
+	split_init_query_buffer[2] = strtok ( NULL , ";" );
+
+	return split_init_query_buffer;
 }
