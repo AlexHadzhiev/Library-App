@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
 #include "include/db_utils.h"
 
 char *
@@ -65,4 +66,50 @@ split_init_query ( char * init_query_buffer )
 	split_init_query_buffer[2] = strtok ( NULL , ";" );
 
 	return split_init_query_buffer;
+}
+
+MYSQL * 
+init_db ( char ** split_init_query_buffer )
+{
+	MYSQL * connection = mysql_init ( NULL );
+
+	if ( (mysql_real_connect ( connection , "localhost" , "thelichknight" , "12345678" , NULL , 0 , NULL , 0 )) == NULL )
+	{
+		perror ( "mysql_real_connect" );
+		return ( MYSQL * ) NULL;
+	}
+
+	if ( mysql_query ( connection , "CREATE DATABASE Library_App" ) )
+	{
+		perror ( "mysql_query" );
+		return ( MYSQL * ) NULL;
+	}
+
+	if ( mysql_select_db ( connection , "Library_App" ) )
+	{
+		perror ( "mysql_select_db" );
+		return ( MYSQL * ) NULL;
+	}
+
+	for ( int i = 0 ; i < 3 ; ++i )
+	{
+		if ( mysql_query ( connection , split_init_query_buffer[i] ) )
+		{
+			perror ( "mysql_query" );
+			return ( MYSQL * ) NULL;
+		}
+	}
+
+	if ( !default_collection_set )
+	{
+		if ( mysql_query ( connection , "INSERT INTO Collection(name) VALUES(\"DEFAULT COLLECTION\")" ) )
+		{
+			perror ( "mysql_query" );
+			return ( MYSQL * ) NULL;
+		}
+
+		default_collection_set = 1;
+	}
+
+	return connection;
 }

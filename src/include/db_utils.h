@@ -1,5 +1,7 @@
 #include <mysql.h>
 
+static int default_collection_set;
+
 MYSQL *
 init_db ( char ** split_init_query_buffer );
 

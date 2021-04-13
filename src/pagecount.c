@@ -15,7 +15,6 @@ pagecount ( char * filename )
 	if ( !ctx )
 	{
 		fprintf ( stderr , "Failed to create mupdf context\n" );
-		
 		return -1;
 	}
 
@@ -27,7 +26,6 @@ pagecount ( char * filename )
 	{
 		fprintf ( stderr , "Failed to register document handlers: %s\n" , fz_caught_message ( ctx ) );
 		fz_drop_context ( ctx );
-		
 		return -1;
 	}
 
@@ -39,7 +37,6 @@ pagecount ( char * filename )
 	{
 		fprintf ( stderr , "Failed to open document: %s\n" , fz_caught_message ( ctx ) );
 		fz_drop_context ( ctx );
-		
 		return -1;
 	}
 
@@ -52,7 +49,6 @@ pagecount ( char * filename )
 		fprintf ( stderr , "Failed to count the number of pages: %s\n" , fz_caught_message ( ctx ) );
 		fz_drop_document ( ctx , doc );
 		fz_drop_context ( ctx );
-
 		return -1;
 	}
 
