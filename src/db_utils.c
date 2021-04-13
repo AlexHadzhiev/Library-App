@@ -13,10 +13,10 @@
 char *
 read_from_init_file ()
 {
-	int fd = open ( "init_query.txt" , O_RDONLY );
+	int fd = open ( "/home/thelichknight/School/TP/library_app/Library-App/src/init_query.txt" , O_RDONLY );
 	if ( fd < 0 )
 	{
-		perror ( "open" );
+		perror ( "open [read_from_init_file]" );
 		return ( char * ) NULL;
 	}
 
@@ -30,7 +30,7 @@ read_from_init_file ()
 	{
 		if ( bytes_read < 0 )
 		{
-			perror ( "read" );
+			perror ( "read [read_from_init_file]" );
 			free ( init_query_buffer );
 			return ( char * ) NULL;
 		}
@@ -48,7 +48,7 @@ read_from_init_file ()
 
 	if ( close ( fd ) < 0)
 	{
-		perror ( "close" );
+		perror ( "close [read_from_init_file]" );
 		free ( init_query_buffer );
 		return ( char * ) NULL;
 	}
@@ -71,25 +71,28 @@ split_init_query ( char * init_query_buffer )
 }
 
 MYSQL * 
-init_db ( char ** split_init_query_buffer )
+init_db ()
 {
+	char * init_query_buffer = read_from_init_file ();
+	char ** split_init_query_buffer = split_init_query ( init_query_buffer );
+
 	MYSQL * connection = mysql_init ( NULL );
 
 	if ( (mysql_real_connect ( connection , "localhost" , "thelichknight" , "12345678" , NULL , 0 , NULL , 0 )) == NULL )
 	{
-		perror ( "mysql_real_connect" );
+		perror ( "mysql_real_connect [init_db]" );
 		return ( MYSQL * ) NULL;
 	}
 
 	if ( mysql_query ( connection , "CREATE DATABASE Library_App" ) )
 	{
-		perror ( "mysql_query" );
+		perror ( "mysql_query [init_db]" );
 		return ( MYSQL * ) NULL;
 	}
 
 	if ( mysql_select_db ( connection , "Library_App" ) )
 	{
-		perror ( "mysql_select_db" );
+		perror ( "mysql_select_db [init_db]" );
 		return ( MYSQL * ) NULL;
 	}
 
@@ -97,7 +100,7 @@ init_db ( char ** split_init_query_buffer )
 	{
 		if ( mysql_query ( connection , split_init_query_buffer[i] ) )
 		{
-			perror ( "mysql_query" );
+			perror ( "mysql_query [init_db]" );
 			return ( MYSQL * ) NULL;
 		}
 	}
@@ -106,12 +109,15 @@ init_db ( char ** split_init_query_buffer )
 	{
 		if ( mysql_query ( connection , "INSERT INTO Collection(name) VALUES(\"DEFAULT COLLECTION\")" ) )
 		{
-			perror ( "mysql_query" );
+			perror ( "mysql_query [init_db]" );
 			return ( MYSQL * ) NULL;
 		}
 
 		default_collection_set = 1;
 	}
+
+	free ( init_query_buffer );
+	free ( split_init_query_buffer );
 
 	return connection;
 }
@@ -119,19 +125,85 @@ init_db ( char ** split_init_query_buffer )
 int
 insert_book ( MYSQL * connection , char ** values )
 {
+	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
 
+	strcpy ( query_buffer , "INSERT INTO Book(title, author, publisher, year, pagecount, filepath, filename) VALUES(" );
+	
+	for ( int i = 0 ; i < 7 ; ++i )
+	{
+		if ( !strcmp ( values[i] , "\n" ) )
+			strcat ( query_buffer , "NULL" );
+		else 
+		{	
+			if ( (i != 3) || (i != 4) )
+				strcat ( query_buffer , "\"" );
+			
+			strcat ( query_buffer , values[i] );
+			
+			if ( (i != 3) || (i != 4) )
+				strcat ( query_buffer , "\"" );
+		}
+
+		if ( i < 6 )
+			strcat ( query_buffer , ", " );
+		else
+			strcat ( query_buffer , ")" );
+	}
+
+	strcat ( query_buffer , "\0" );
+
+	if ( mysql_query ( connection , query_buffer ) )
+	{
+		perror ( "mysql_query [insert_book]" );
+		free ( query_buffer );
+		return -1;
+	}
+
+	free ( query_buffer );
+
+	return 0;
 }
 
 int
 insert_collection ( MYSQL * connection , char ** values )
 {
+	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
 
+	strcpy ( query_buffer , "INSERT INTO Collection(name) VALUES(\"" );
+	strcat ( query_buffer , values[0] );
+	strcat ( query_buffer , "\")\0" );
+
+	if ( mysql_query ( connection , query_buffer ) )
+	{
+		perror ( "mysql_query [insert_collection]" );
+		free ( query_buffer );
+		return -1;
+	}
+
+	free ( query_buffer );
+
+	return 0;
 }
 
 int
 insert_book_into_collection ( MYSQL * connection , char ** values )
 {
+	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
 
+	strcpy ( query_buffer , "INSERT INTO BookCollection(book_id, collection_id) VALUES(" );
+	strcat ( query_buffer , values[0] );
+	strcat ( query_buffer , ", " );
+	strcat ( query_buffer , values[1] );
+	strcat ( query_buffer , ")\0" );
+
+	if ( mysql_query ( connection , query_buffer ) )
+	{
+		perror ( "mysql_query [insert_book_into_collection]" );
+		free ( query_buffer );
+		return -1;
+	}
+
+	return 0;
 }
 
 int
@@ -145,12 +217,10 @@ delete_book ( MYSQL * connection , char ** values )
 
 	if ( mysql_query ( connection , query_buffer ) )
 	{
-		perror ( "mysql_query" );
+		perror ( "mysql_query [delete_book]" );
 		free ( query_buffer );
 		return -1;
 	}
-
-	free ( query_buffer );
 
 	return 0;
 }
@@ -166,12 +236,10 @@ delete_collection ( MYSQL * connection , char ** values )
 
 	if ( mysql_query ( connection , query_buffer ) )
 	{
-		perror ( "mysql_query" );
+		perror ( "mysql_query [delete_collection]" );
 		free ( query_buffer );
 		return -1;
 	}
-
-	free ( query_buffer );
 
 	return 0;
 }
@@ -189,12 +257,10 @@ delete_book_from_collection ( MYSQL * connection , char ** values )
 
 	if ( mysql_query ( connection , query_buffer ) )
 	{
-		perror ( "mysql_query" );
+		perror ( "mysql_query [delete_book_from_collection]" );
 		free ( query_buffer );
 		return -1;
 	}
-
-	free ( query_buffer );
 
 	return 0;
 }

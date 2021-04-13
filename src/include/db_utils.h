@@ -6,7 +6,7 @@
 static int default_collection_set = 0;
 
 MYSQL *
-init_db ( char ** split_init_query_buffer );
+init_db ();
 
 int
 insert_book ( MYSQL * connection , char ** values );

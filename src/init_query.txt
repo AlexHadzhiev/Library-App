@@ -4,8 +4,8 @@ CREATE TABLE Book
 	title VARCHAR(1024),
 	author VARCHAR(1024),
 	publisher VARCHAR(1024),
-	year VARCHAR(8),
-	pagecount VARCHAR(8),
+	year INT,
+	pagecount INT,
 	filepath VARCHAR(1024) NOT NULL,
 	filename VARCHAR(1024) NOT NULL UNIQUE
 );
