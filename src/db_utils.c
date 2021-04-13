@@ -31,6 +31,7 @@ read_from_init_file ()
 		if ( bytes_read < 0 )
 		{
 			perror ( "read" );
+			free ( init_query_buffer );
 			return ( char * ) NULL;
 		}
 
@@ -48,6 +49,7 @@ read_from_init_file ()
 	if ( close ( fd ) < 0)
 	{
 		perror ( "close" );
+		free ( init_query_buffer );
 		return ( char * ) NULL;
 	}
 
@@ -112,4 +114,87 @@ init_db ( char ** split_init_query_buffer )
 	}
 
 	return connection;
+}
+
+int
+insert_book ( MYSQL * connection , char ** values )
+{
+
+}
+
+int
+insert_collection ( MYSQL * connection , char ** values )
+{
+
+}
+
+int
+insert_book_into_collection ( MYSQL * connection , char ** values )
+{
+
+}
+
+int
+delete_book ( MYSQL * connection , char ** values )
+{
+	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
+
+	strcpy ( query_buffer , "DELETE Book FROM Book WHERE id = " );
+	strcat ( query_buffer , values[0] );
+	strcat ( query_buffer , "\0" );
+
+	if ( mysql_query ( connection , query_buffer ) )
+	{
+		perror ( "mysql_query" );
+		free ( query_buffer );
+		return -1;
+	}
+
+	free ( query_buffer );
+
+	return 0;
+}
+
+int
+delete_collection ( MYSQL * connection , char ** values )
+{
+	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
+	
+	strcpy ( query_buffer , "DELETE Collection FROM Collection WHERE id = " );
+	strcat ( query_buffer , values[0] );
+	strcat ( query_buffer , "\0" );
+
+	if ( mysql_query ( connection , query_buffer ) )
+	{
+		perror ( "mysql_query" );
+		free ( query_buffer );
+		return -1;
+	}
+
+	free ( query_buffer );
+
+	return 0;
+}
+
+int
+delete_book_from_collection ( MYSQL * connection , char ** values )
+{
+	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
+
+	strcpy ( query_buffer , "DELETE BookCollection FROM BookCollection WHERE book_id = " );
+	strcat ( query_buffer , values[0] );
+	strcat ( query_buffer , " AND collection_id = " );
+	strcat ( query_buffer , values[1] );
+	strcat ( query_buffer , "\0" );
+
+	if ( mysql_query ( connection , query_buffer ) )
+	{
+		perror ( "mysql_query" );
+		free ( query_buffer );
+		return -1;
+	}
+
+	free ( query_buffer );
+
+	return 0;
 }
