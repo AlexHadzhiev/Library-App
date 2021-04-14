@@ -16,6 +16,7 @@ read_from_file ( char * filename )
 	if ( fd < 0 )
 	{
 		perror ( "open [read_from_file]" );
+		
 		return ( char * ) NULL;
 	}
 
@@ -30,7 +31,9 @@ read_from_file ( char * filename )
 		if ( bytes_read < 0 )
 		{
 			perror ( "read [read_from_file]" );
+			
 			free ( buffer );
+			
 			return ( char * ) NULL;
 		}
 
@@ -46,7 +49,9 @@ read_from_file ( char * filename )
 	if ( close ( fd ) < 0 )
 	{
 		perror ( "close [read_from_file]" );
+		
 		free ( buffer );
+		
 		return ( char * ) NULL;
 	}
 
@@ -57,6 +62,7 @@ char **
 split_information ( char * buffer )
 {
 	char * buffer_backup = ( char * ) calloc ( 2048 , sizeof(char) );
+	
 	strcpy ( buffer_backup , buffer );
 
 	int len = ( int ) strlen ( buffer );
@@ -65,13 +71,16 @@ split_information ( char * buffer )
 
 	for ( int i = 0 ; i < len ; ++i )
 		if ( buffer[i] == '\n' )
+		{
 			num_of_lines++;
+		}
 
 	char ** split_info = ( char ** ) calloc ( num_of_lines , sizeof(char *) );
 	for ( int i = 0 ; i < num_of_lines ; ++i )
 		split_info[i] = ( char * ) calloc ( 1024 , sizeof(char) );
 
 	char * line = strtok ( buffer_backup , "\n" );
+	
 	for ( int i = 0 ; (i < num_of_lines) && (line != NULL) ; ++i )
 	{
 		strcpy ( split_info[i] , line );
