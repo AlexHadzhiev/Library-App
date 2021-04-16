@@ -103,6 +103,7 @@ main ( void )
 	char * pagecounts = read_from_file ( "pagecount.txt" );
 	char * filenames = read_from_file ( "filenames.txt" );
 	char * colls = read_from_file ( "collections.txt" );
+	char * bookcolls = read_from_file ( "bookcollections.txt" );
 
 	MYSQL * connection = init_db ();
 	
@@ -113,6 +114,7 @@ main ( void )
 	char ** pagecount_list = split_information ( pagecounts );
 	char ** filenames_list = split_information ( filenames );
 	char ** collections_list = split_information ( colls );
+	char ** bookcollections_list = split_information ( bookcolls );
 
 	char *** books = ( char *** ) calloc ( 24 , sizeof(char **) );
 	for ( int i = 0 ; i < 24 ; ++i )
@@ -156,6 +158,82 @@ main ( void )
 	for ( int i = 0 ; i < 3 ; ++i )
 		insert_collection ( connection , collections[i] );
 
+	char *** bookcollections = ( char *** ) calloc ( 24 , sizeof(char **) );
+	for ( int i = 0 ; i < 24 ; ++i )
+	{
+		bookcollections[i] = ( char ** ) calloc ( 2 , sizeof(char *) );
+		for ( int j = 0 ; j < 2 ; ++j )
+		{
+			bookcollections[i][j] = ( char * ) calloc ( 1024 , sizeof(char) );
+		}
+	}
+
+	for ( int i = 0 ; i < 24 ; ++i )
+	{
+		for ( int j = 0 ; j < 2 ; ++j )
+		{
+			if ( !strcmp ( bookcollections_list[i] , "DEFAULT COLLECTION" ) )
+			{
+				if ( j )
+				{
+					strcpy ( bookcollections[i][j] , "1" );
+				}
+				else
+				{
+					char * num_to_str = ( char * ) calloc ( 16 , sizeof(char) );
+					sprintf ( num_to_str , "%d" , (i + 1) );
+					strcpy ( bookcollections[i][j] , num_to_str );
+					free ( num_to_str );
+				}
+			}
+			if ( !strcmp ( bookcollections_list[i] , "Fantasy" ) )
+			{
+				if ( j )
+				{
+					strcpy ( bookcollections[i][j] , "2" );
+				}
+				else
+				{
+					char * num_to_str = ( char * ) calloc ( 16 , sizeof(char) );
+					sprintf ( num_to_str , "%d" , (i + 1) );
+					strcpy ( bookcollections[i][j] , num_to_str );
+					free ( num_to_str );
+				}
+			}
+			if ( !strcmp ( bookcollections_list[i] , "Sci-Fi" ) )
+			{
+				if ( j )
+				{
+					strcpy ( bookcollections[i][j] , "3" );
+				}
+				else
+				{
+					char * num_to_str = ( char * ) calloc ( 16 , sizeof(char) );
+					sprintf ( num_to_str , "%d" , (i + 1) );
+					strcpy ( bookcollections[i][j] , num_to_str );
+					free ( num_to_str );
+				}
+			}
+			if ( !strcmp ( bookcollections_list[i] , "Horror" ) )
+			{
+				if ( j )
+				{
+					strcpy ( bookcollections[i][j] , "4" );
+				}
+				else
+				{
+					char * num_to_str = ( char * ) calloc ( 16 , sizeof(char) );
+					sprintf ( num_to_str , "%d" , (i + 1) );
+					strcpy ( bookcollections[i][j] , num_to_str );
+					free ( num_to_str );
+				}
+			}
+		}
+	}
+
+	for ( int i = 0 ; i < 24 ; ++i )
+		insert_book_into_collection ( connection , bookcollections[i] );
+
 	free ( titles );
 	free ( authors );
 	free ( publishers );
@@ -163,6 +241,7 @@ main ( void )
 	free ( pagecounts );
 	free ( filenames );
 	free ( colls );
+	free ( bookcolls );
 
 	for ( int i = 0 ; i < 24 ; ++i )
 	{
@@ -172,6 +251,7 @@ main ( void )
 		free ( years_list[i] );
 		free ( pagecount_list[i] );
 		free ( filenames_list[i] );
+		free ( bookcollections_list[i] );
 	}
 
 	for ( int i = 0 ; i < 3 ; ++i )
@@ -194,6 +274,15 @@ main ( void )
 		free ( collections[i] );
 	}
 
+	for ( int i = 0 ; i < 24 ; ++i )
+	{
+		for ( int j = 0 ; j < 2 ; ++j )
+		{
+			free ( bookcollections[i][j] );
+		}
+		free ( bookcollections[i] );
+	}
+
 	free ( titles_list );
 	free ( authors_list );
 	free ( publishers_list );
@@ -201,9 +290,11 @@ main ( void )
 	free ( pagecount_list );
 	free ( filenames_list );
 	free ( collections_list );
+	free ( bookcollections_list );
 
 	free ( books );
 	free ( collections );
+	free ( bookcollections );
 
 	mysql_close ( connection );
 

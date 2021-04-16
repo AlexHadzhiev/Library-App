@@ -1,0 +1,10 @@
+SELECT * FROM Book;
+
+SELECT * FROM Collection;
+
+SELECT BookCollection.id , Book.title , Book.author , Collection.name AS "collection" 
+FROM BookCollection
+LEFT JOIN Book
+ON Book.id = BookCollection.book_id
+LEFT JOIN Collection
+ON Collection.id = BookCollection.collection_id;
