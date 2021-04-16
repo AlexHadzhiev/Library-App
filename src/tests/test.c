@@ -94,7 +94,7 @@ split_information ( char * buffer )
 }
 
 int
-main ( void )
+main ( int argc , char * argv[])
 {
 	char * titles = read_from_file ( "titles.txt" );
 	char * authors = read_from_file ( "authors.txt" );
@@ -233,6 +233,43 @@ main ( void )
 
 	for ( int i = 0 ; i < 24 ; ++i )
 		insert_book_into_collection ( connection , bookcollections[i] );
+
+	if ( !strcmp ( argv[(argc - 1)] , "--delete" ) )
+	{
+		char *** delete_books = ( char ***  ) calloc ( 5 , sizeof(char **) );
+		for ( int i = 0 ; i < 5 ; ++i )
+		{
+			delete_books[i] = ( char ** ) calloc ( 1 , sizeof(char *) );
+			delete_books[i][0] = ( char * ) calloc ( 1024 , sizeof(char) );
+		}
+
+		strcpy ( delete_books[0][0] , "3" );
+		strcpy ( delete_books[1][0] , "5" );
+		strcpy ( delete_books[2][0] , "7" );
+		strcpy ( delete_books[3][0] , "11" );
+		strcpy ( delete_books[4][0] , "17" );
+
+		for ( int i = 0 ; i < 5 ; ++i )
+			delete_book ( connection , delete_books[i] );
+	
+		char ** delete_coll = ( char ** ) calloc ( 1 , sizeof(char *) );
+		delete_coll[0] = ( char * ) calloc ( 1024 , sizeof(char) );
+
+		strcpy ( delete_coll[0] , "4" );
+
+		delete_collection ( connection , delete_coll );
+
+		free ( delete_coll[0] );
+		free ( delete_coll );
+
+		for ( int i = 0 ; i < 5 ; ++i )
+		{
+			free ( delete_books[i][0] );
+			free ( delete_books[i] );
+		}
+
+		free ( delete_books );
+	}
 
 	free ( titles );
 	free ( authors );

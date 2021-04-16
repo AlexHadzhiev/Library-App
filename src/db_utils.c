@@ -281,22 +281,39 @@ insert_book_into_collection ( MYSQL * connection , char ** values )
 int
 delete_book ( MYSQL * connection , char ** values )
 {
-	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
+	char * query_buffer1 = ( char * ) calloc ( 2048 , sizeof(char) );
+	char * query_buffer2 = ( char * ) calloc ( 2048 , sizeof(char) );
 
-	strcpy ( query_buffer , "DELETE Book FROM Book WHERE id = " );
-	strcat ( query_buffer , values[0] );
-	strcat ( query_buffer , "\0" );
+	strcpy ( query_buffer1 , "DELETE BookCollection FROM BookCollection WHERE book_id = " );
+	strcat ( query_buffer1 , values[0] );
+	strcat ( query_buffer1 , "\0" );
 
-	if ( mysql_query ( connection , query_buffer ) )
+	strcpy ( query_buffer2 , "DELETE Book FROM Book WHERE id = " );
+	strcat ( query_buffer2 , values[0] );
+	strcat ( query_buffer2 , "\0" );
+
+	if ( mysql_query ( connection , query_buffer1 ) )
 	{
 		perror ( "mysql_query [delete_book]" );
 		
-		free ( query_buffer );
+		free ( query_buffer1 );
+		free ( query_buffer2 );
 		
 		return -1;
 	}
 
-	free ( query_buffer );
+	if ( mysql_query ( connection , query_buffer2 ) )
+	{
+		perror ( "mysql_query [delete_book]" );
+		
+		free ( query_buffer1 );
+		free ( query_buffer2 );
+		
+		return -1;
+	}
+	
+	free ( query_buffer1 );
+	free ( query_buffer2 );
 
 	return 0;
 }
@@ -304,22 +321,39 @@ delete_book ( MYSQL * connection , char ** values )
 int
 delete_collection ( MYSQL * connection , char ** values )
 {
-	char * query_buffer = ( char * ) calloc ( 2048 , sizeof(char) );
-	
-	strcpy ( query_buffer , "DELETE Collection FROM Collection WHERE id = " );
-	strcat ( query_buffer , values[0] );
-	strcat ( query_buffer , "\0" );
+	char * query_buffer1 = ( char * ) calloc ( 2048 , sizeof(char) );
+	char * query_buffer2 = ( char * ) calloc ( 2048 , sizeof(char) );
 
-	if ( mysql_query ( connection , query_buffer ) )
+	strcpy ( query_buffer1 , "DELETE BookCollection FROM BookCollection WHERE collection_id = " );
+	strcat ( query_buffer1 , values[0] );
+	strcat ( query_buffer1 , "\0" );
+
+	strcpy ( query_buffer2 , "DELETE Collection FROM Collection WHERE id = " );
+	strcat ( query_buffer2 , values[0] );
+	strcat ( query_buffer2 , "\0" );
+
+	if ( mysql_query ( connection , query_buffer1 ) )
 	{
 		perror ( "mysql_query [delete_collection]" );
 		
-		free ( query_buffer );
+		free ( query_buffer1 );
+		free ( query_buffer2 );
+		
+		return -1;
+	}
+
+	if ( mysql_query ( connection , query_buffer2 ) )
+	{
+		perror ( "mysql_query [delete_collection]" );
+		
+		free ( query_buffer1 );
+		free ( query_buffer2 );
 		
 		return -1;
 	}
 	
-	free ( query_buffer );
+	free ( query_buffer1 );
+	free ( query_buffer2 );
 
 	return 0;
 }
