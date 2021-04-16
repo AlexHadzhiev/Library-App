@@ -1,0 +1,24 @@
+CREATE TABLE Book
+(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	title VARCHAR(1024),
+	author VARCHAR(1024),
+	publisher VARCHAR(1024),
+	year INT,
+	pagecount INT,
+	filepath VARCHAR(1024) NOT NULL,
+	filename VARCHAR(1024) NOT NULL UNIQUE
+);
+CREATE TABLE Collection
+(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(1024) NOT NULL UNIQUE
+);
+CREATE TABLE BookCollection
+(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	book_id INT NOT NULL,
+	collection_id INT NOT NULL,
+	FOREIGN KEY (book_id) REFERENCES Book(id),
+	FOREIGN KEY (collection_id) REFERENCES Collection(id)
+)
