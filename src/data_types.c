@@ -1,9 +1,12 @@
 #include "include/data_types.h"
 #include <stdlib.h>
+#include <bsd/stdlib.h>
+#include <limits.h>
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <mysql.h>
 
 int 
 cmpstr ( const char * a , const char * b )
@@ -81,13 +84,22 @@ void
 init_book ( long id , char * title , char * author , char * publisher , int year , int pagecount , char * filepath , char * filename , book * b )
 {
 	b->id = id;
-	strcpy ( b->title , title );
-	strcpy ( b->author , author );
-	strcpy ( b->publisher , publisher );
+	strcpy ( b->title , title ); strcat ( b->title , "\0" );
+	strcpy ( b->author , author ); strcat ( b->author , "\0" );
+	strcpy ( b->publisher , publisher ); strcat ( b->publisher , "\0" );
 	b->year = year;
 	b->pagecount = pagecount;
-	strcpy ( b->filepath , filepath );
-	strcpy ( b->filename , filename );
+	strcpy ( b->filepath , filepath ); strcat ( b->filepath , "\0" );
+	strcpy ( b->filename , filename ); strcat ( b->filename , "\0" );
+}
+
+void
+fill_book_from_db ( MYSQL_RES * result , book * b )
+{
+	MYSQL_ROW row = mysql_fetch_row ( result );
+	const char * errstr;
+
+	init_book ( strtonum ( row[0] , 0 , 999999 , &errstr ) , row[1] , row[2] , row[3] , strtonum ( row[4] , 0 , 999999 , &errstr ) , strtonum ( row[5] , 0 , 999999 , &errstr ) , row[6] , row[7] , b );
 }
 
 void
@@ -118,6 +130,15 @@ init_collection ( long id , char * name , collection * c )
 {
 	c->id = id;
 	strcpy ( c->name , name );
+}
+
+void
+fill_collection_from_db ( MYSQL_RES * result , collection * c )
+{
+	MYSQL_ROW row = mysql_fetch_row ( result );
+	const char * errstr;
+
+	init_collection ( strtonum ( row[0] , 0 , 999999 , &errstr ) , row[1] , c );
 }
 
 void

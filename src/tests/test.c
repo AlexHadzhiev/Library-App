@@ -1,3 +1,5 @@
+#include <bsd/stdlib.h>
+#include <limits.h>
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,6 +10,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "../include/db_utils.h"
+#include "../include/data_types.h"
 
 char *
 read_from_file ( char * filename )
@@ -271,6 +274,35 @@ main ( int argc , char * argv[])
 		free ( delete_books );
 	}
 
+	mysql_query ( connection , "SELECT * FROM Book" );
+	MYSQL_RES * result = mysql_store_result ( connection );
+	
+	book ** bks = malloc ( sizeof(book) * 24 );
+	for ( int i = 0 ; i < 24 ; ++i )
+		bks[i] = alloc_book ();
+	for ( int i = 0 ; i < 24 ; ++i )
+		fill_book_from_db ( result , bks[i] );
+	for ( int i = 0 ; i < 24 ; ++i )
+		printf ( "id: %ld ; title: %s ; author: %s ; year: %d ; pagecount: %d\n" , bks[i]->id , bks[i]->title , bks[i]->author , bks[i]->year , bks[i]->pagecount );
+	for ( int i = 0 ; i < 24 ; ++i )
+		free_book ( bks[i] );
+
+	mysql_query ( connection , "SELECT * FROM Collection" );
+	result = mysql_store_result ( connection );
+
+	collection ** c = malloc ( sizeof(collection) * 4 );
+	for ( int i = 0 ; i < 4 ; ++i )
+		c[i] = alloc_collection ();	
+	for ( int i = 0 ; i < 4 ; ++i )
+		fill_collection_from_db ( result , c[i] );
+	for ( int i = 0 ; i < 4 ; ++i )
+		printf ( "id: %ld ; name: %s\n" , c[i]->id , c[i]->name );
+	for ( int i = 0 ; i < 4 ; ++i )
+		free_collection ( c[i] );
+
+	mysql_query ( connection , "DROP DATABASE Library_App" );
+
+	free ( result );
 	free ( titles );
 	free ( authors );
 	free ( publishers );

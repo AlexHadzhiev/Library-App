@@ -1,6 +1,8 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+#include <mysql.h>
+
 typedef
 struct
 {
@@ -40,6 +42,9 @@ void
 init_book ( long id , char * title , char * author , char * publisher , int year , int pagecount , char * filepath , char * filename , book * b );
 
 void
+fill_book_from_db ( MYSQL_RES * result , book * b );
+
+void
 free_book ();
 
 collection * 
@@ -47,6 +52,9 @@ alloc_collection ();
 
 void 
 init_collection ( long id , char * name , collection * c );
+
+void
+fill_collection_from_db ( MYSQL_RES * result , collection * c );
 
 void
 free_collection ();
