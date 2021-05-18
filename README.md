@@ -8,7 +8,7 @@ Anything Linux based
 * C
 * MySQL
 * [ncurses Library](https://invisible-island.net/ncurses/)
-* [MuPDF](https://mupdf.com/downloads/index.html)
+* [MuPDF](https://mupdf.com/docs/index.html)
 * Some [FreeBSD](https://www.freebsd.org/) libraries
 * Shell script
 
