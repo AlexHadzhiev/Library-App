@@ -7,7 +7,7 @@ Anything Linux based
 ### Technologies
 * C
 * MySQL
-* [ncurses Library](https://invisible-island.net/ncurses/)
+* [NCurses Library](https://invisible-island.net/ncurses/)
 * [MuPDF](https://mupdf.com/docs/index.html)
 * Some [FreeBSD](https://www.freebsd.org/) libraries
 * Shell script
