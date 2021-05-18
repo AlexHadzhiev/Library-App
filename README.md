@@ -28,10 +28,10 @@ Anything Linux based
 3. Time to reasearch the ncurses library.
 
 ## Second Milestone
-1. Add the ability to sort books by pagecount, author, title, publisher, and year published.
+1. Add the ability to sort books by author, title, publisher, pagecount and year published.
 2. Create the UI for collections and books + keybinds:
 * UI for the collections and the list of books.
-* Keybinds for sorting by category (pagecount, author, title, publisher, year published).
+* Keybinds for sorting by category (author, title, publisher, pagecount and year published).
 3. Make it so that each file is renamed with their respective author, title and publisher (The pattern will be the same for every collection and/file file).
 
 ## Third Milestone
