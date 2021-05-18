@@ -29,7 +29,7 @@ int main ()
 	init_book ( 9 , "yieyhs" , "eryts" , "brsnys" , 1948 , 144 , "tjartba" , "agra" , books[8] );
 	init_book ( 10 , "emarng" , "eakuyte" , "jtsgba" , 2003 , 536 , "yraga" , "garbr" , books[9] );
 
-	printf ( "-BOOK-\n" );
+	printf ( "-BOOKS-\n" );
 
 	printf ( "-Unsorted-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
@@ -65,7 +65,7 @@ int main ()
 	for ( int i = 0 ; i < 10 ; ++i )
 		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
-	printf ( "-COLLECTION-\n" );
+	printf ( "-COLLECTIONS-\n" );
 
 	collection ** collections = malloc ( sizeof(collections) * 4 );
 

@@ -302,7 +302,6 @@ main ( int argc , char * argv[])
 
 	mysql_query ( connection , "DROP DATABASE Library_App" );
 
-	free ( result );
 	free ( titles );
 	free ( authors );
 	free ( publishers );
