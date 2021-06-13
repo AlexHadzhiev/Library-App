@@ -300,7 +300,7 @@ main ( int argc , char * argv[])
 	for ( int i = 0 ; i < 4 ; ++i )
 		free_collection ( c[i] );
 
-	mysql_query ( connection , "DROP DATABASE Library_App" );
+	//mysql_query ( connection , "DROP DATABASE Library_App" );
 
 	free ( titles );
 	free ( authors );

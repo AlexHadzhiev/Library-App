@@ -99,7 +99,32 @@ fill_book_from_db ( MYSQL_RES * result , book * b )
 	MYSQL_ROW row = mysql_fetch_row ( result );
 	const char * errstr;
 
-	init_book ( strtonum ( row[0] , 0 , 999999 , &errstr ) , row[1] , row[2] , row[3] , strtonum ( row[4] , 0 , 999999 , &errstr ) , strtonum ( row[5] , 0 , 999999 , &errstr ) , row[6] , row[7] , b );
+	char * title = malloc ( sizeof(char) * 1024 );
+	strcpy ( title , row[1] ); strcat ( title , "\0" );
+	
+	char * author = malloc ( sizeof(char) * 1024 );
+	strcpy ( author , row[2] ); strcat ( author , "\0" );
+	
+	char * publisher = malloc ( sizeof(char) * 1024 );
+	strcpy ( publisher , row[3] ); strcat ( publisher , "\0" );
+	
+	char * filepath = malloc ( sizeof(char) * 1024 );
+	strcpy ( filepath , row[6] ); strcat ( filepath , "\0" );
+	
+	char * filename = malloc ( sizeof(char) * 1024 );
+	strcpy ( filename , row[7] ); strcat ( filename , "\0" );
+
+	int id = strtonum ( row[0] , 0 , 999999 , &errstr );
+	int year = strtonum ( row[4] , 0 , 999999 , &errstr );
+	int pagecount = strtonum ( row[5] , 0 , 999999 , &errstr );
+
+	init_book ( id , title , author , publisher , year , pagecount , filepath , filename , b );
+
+	free ( title );
+	free ( author );
+	free ( publisher );
+	free ( filepath );
+	free ( filename );
 }
 
 void
@@ -138,7 +163,14 @@ fill_collection_from_db ( MYSQL_RES * result , collection * c )
 	MYSQL_ROW row = mysql_fetch_row ( result );
 	const char * errstr;
 
-	init_collection ( strtonum ( row[0] , 0 , 999999 , &errstr ) , row[1] , c );
+	char * name = malloc ( sizeof(char) * 1024 );
+	strcpy ( name , row[1] ); strcat ( name , "\0" );
+
+	int id = strtonum ( row[0] , 0 , 999999 , &errstr );
+
+	init_collection ( id , name , c );
+
+	free ( name );
 }
 
 void
