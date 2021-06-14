@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "include/ui.h"
+
 void
 center ( int max_x , const char * str , WINDOW * win )
 {
@@ -93,6 +95,7 @@ main ()
 	noecho ();
 	cbreak ();
 	refresh ();
+	curs_set ( 0 );
 
 	int max_x; int max_y;
 	getmaxyx ( stdscr , max_y , max_x );
@@ -114,7 +117,10 @@ main ()
 		wrefresh ( book_window_headers[i] );
 
 	mvwaddstr ( book_windows[0] , 1 , 1 , "Dune" );
-	mvwaddstr ( book_windows[1] , 1 , 1 , "Frank Herbert" );
+	mvwprintw ( book_windows[1] , 1 , 1 , "%.*s" , 24 , "99999999999999999999999999999999" );
+	wprintw ( book_windows[1] , "..." );
+	mvwprintw ( book_windows[1] , 2 , 1 , "%.*s" , 24 , "764738476474857875847757478483948" );
+	wprintw ( book_windows[1] , "..." );
 
 	for ( int i = 0 ; i < 5 ; ++i )
 		wrefresh ( book_windows[i] );

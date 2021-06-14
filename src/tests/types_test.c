@@ -55,18 +55,9 @@ main ( int argc , char * argv[] )
 	for ( int i = 0 ; i < 24 ; ++i )
 		fill_book_from_db ( result , books[i] );
 
-	printf ( "-UNSORTED-\n" );
-
 	for ( int i = 0 ; i < 24 ; ++i )
 		printf ( "id: %2ld ; title: %60s ; author: %30s ; year: %4d ; pagecount: %5d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->year , books[i]->pagecount );
 	
-	sort_books_by_title ( books , 24 );
-	
-	printf ( "-SORTED-\n" );
-
-	for ( int i = 0 ; i < 24 ; ++i )
-		printf ( "id: %2ld ; title: %50s ; author: %30s ; year: %4d ; pagecount: %5d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->year , books[i]->pagecount );
-
 	for ( int i = 0 ; i < 24 ; ++i )
 		free_book ( books[i] );
 

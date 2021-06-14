@@ -33,37 +33,37 @@ int main ()
 
 	printf ( "-Unsorted-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
-		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
+		printf ( "id: %4ld ; title: %12s ; author: %12s ; publisher: %12s ; year: %4d ; pagecount: %4d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
 	sort_books_by_title ( books , 10 );
 	
 	printf ( "-Sorted by title-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
-		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
+		printf ( "id: %4ld ; title: %12s ; author: %12s ; publisher: %12s ; year: %4d ; pagecount: %4d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
 	sort_books_by_author ( books , 10 );
 
 	printf ( "-Sorted by author-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
-		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
+		printf ( "id: %4ld ; title: %12s ; author: %12s ; publisher: %12s ; year: %4d ; pagecount: %4d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
 	sort_books_by_publisher ( books , 10 );
 	
 	printf ( "-Sorted by publisher-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
-		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
+		printf ( "id: %4ld ; title: %12s ; author: %12s ; publisher: %12s ; year: %4d ; pagecount: %4d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
 	sort_books_by_year ( books , 10 );
 	
 	printf ( "-Sorted by year-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
-		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
+		printf ( "id: %4ld ; title: %12s ; author: %12s ; publisher: %12s ; year: %4d ; pagecount: %4d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
 	sort_books_by_pagecount ( books , 10 );
 	
 	printf ( "-Sorted by pagecount-\n" );
 	for ( int i = 0 ; i < 10 ; ++i )
-		printf ( "id: %ld ; title: %s ; author: %s ; publisher: %s ; year: %d ; pagecount: %d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
+		printf ( "id: %4ld ; title: %12s ; author: %12s ; publisher: %12s ; year: %4d ; pagecount: %4d\n" , books[i]->id , books[i]->title , books[i]->author , books[i]->publisher , books[i]->year , books[i]->pagecount );
 
 	printf ( "-COLLECTIONS-\n" );
 
@@ -80,12 +80,12 @@ int main ()
 	printf ( "-Unsorted-\n" );
 
 	for ( int i = 0 ; i < 4 ; ++i )
-		printf ( "id: %ld ; name: %s\n" , collections[i]->id , collections[i]->name );
+		printf ( "id: %4ld ; name: %12s\n" , collections[i]->id , collections[i]->name );
 
 	sort_collections ( collections , 4 );
 	
 	printf ( "-Sorted-\n" );
 	for ( int i = 0 ; i < 4 ; ++i )
-		printf ( "id: %ld ; name: %s\n" , collections[i]->id , collections[i]->name );
+		printf ( "id: %4ld ; name: %12s\n" , collections[i]->id , collections[i]->name );
 
 }
