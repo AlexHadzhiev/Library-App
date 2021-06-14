@@ -87,7 +87,7 @@ init_book_windows ( int max_y , int max_x )
 	
 	return book_windows;
 }
-
+/*
 int 
 main ()
 {
@@ -128,4 +128,4 @@ main ()
 	getch();
 
 	endwin();
-}
+}*/
