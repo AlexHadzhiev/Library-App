@@ -38,7 +38,7 @@ Anything Linux based
 1. The ability to add books from the UI.
 2. The ability to edit and delete books from the UI.
 3. Residual tasks from the previous milestones.
-4. Cleaning up the UI and adding colors.
+4. Cleaning up the UI.
 5. Bug fixes.
 
 ## Optional Tasks
