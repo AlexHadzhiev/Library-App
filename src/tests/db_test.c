@@ -1,3 +1,5 @@
+#include <bsd/stdlib.h>
+#include <limits.h>
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,6 +10,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "../include/db_utils.h"
+#include "../include/data_types.h"
 
 char *
 read_from_file ( char * filename )
